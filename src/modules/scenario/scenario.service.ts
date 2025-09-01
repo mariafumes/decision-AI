@@ -1,11 +1,15 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { CreateScenarioDto } from './dto/create-scenario.dto';
 import { UpdateScenarioDto } from './dto/update-scenario.dto';
+import { CreateScenarioUseCase } from './use-cases/create-scenario.use-cases';
 
 @Injectable()
 export class ScenarioService {
-  create(createScenarioDto: CreateScenarioDto) {
-    return 'This action adds a new scenario';
+  constructor(private readonly createScenarioUseCase: CreateScenarioUseCase) {}
+  
+  create(data: CreateScenarioDto) {
+    return this.createScenarioUseCase.execute(data);
   }
 
   findAll() {
