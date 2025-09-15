@@ -4,11 +4,16 @@ import { CreateScenarioDto } from './dto/create-scenario.dto';
 import { UpdateScenarioDto } from './dto/update-scenario.dto';
 import { CreateScenarioUseCase } from './use-cases/create-scenario.use-cases';
 import { ListScenarioRepository } from './repository/list-scenario-repository';
+import { findOneScenarioRepository } from './repository';
+import { DeleteScenarioUseCase, UpdateScenarioUseCase } from './use-cases';
 
 @Injectable()
 export class ScenarioService {
   constructor(private readonly createScenarioUseCase: CreateScenarioUseCase,
-    private readonly listScenarioUseCase: ListScenarioRepository
+    private readonly listScenarioUseCase: ListScenarioRepository,
+    private readonly findoneScenarioUseCase: findOneScenarioRepository,
+    private readonly deleteScenarioUseCase: DeleteScenarioUseCase,
+    private readonly updateScenarioUseCase: UpdateScenarioUseCase
   ) {}
   
   create(data: CreateScenarioDto) {
@@ -19,15 +24,16 @@ export class ScenarioService {
     return this.listScenarioUseCase.list();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} scenario`;
+  findOne(id: string) {
+    return this.findoneScenarioUseCase.findOne(id);
   }
 
-  update(id: number, updateScenarioDto: UpdateScenarioDto) {
-    return `This action updates a #${id} scenario`;
+  update(id: string, data: UpdateScenarioDto) {
+
+    return this.updateScenarioUseCase.execute(id, data);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} scenario`;
+  remove(id: string) {
+    return this.deleteScenarioUseCase.execute(id);
   }
 }
